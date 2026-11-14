@@ -1,7 +1,19 @@
 CODIGO SKU;NOMBRE DEL PRODUCTO;CATEGORIA;DESCRIPCION;STOCK;PRECIO DOLAR;PRECIO BCV;FOTO;TASA DE CAMBIO
-UCS18578;Sierra Circular;Herramientas Eléctricas;"Voltaje: 110-120V~50/60Hz - Potencia de entrada: 1200W - Diámetro de la hoja: 7-1/4""x0.787""";15;30;27420,6;https://i.ibb.co/hRGhLNJb/Sierra-Circular.jpg;914,02
-UPS2408;Lijadora Orbital De Mano;Herramientas Eléctricas;"Voltaje: 110-120V~60Hz - Potencia de entrada: 240W - Velocidad sin carga: 14000rpm";10;25;22850,5;https://i.ibb.co/PsY5q0q1/Lijadora-Orbital-De-Mano.jpg;914,02
-UCOS223589;Sierra cortada;Herramientas Eléctricas;"Voltage: 110V-120V~50-60Hz - Input power: 2200W - Blade size: 14""x1""";20;15;13710,3;https://i.ibb.co/pBjTRfsd/Cierra-cortada.jpg;914,02
-GSE50001;Generador diésel silencioso;Generadores;"Voltaje nominal(V): 220-240 - Frecuencia nominal(Hz): 50 - Potencia máx. (KW): 5";5;350;319907;https://i.ibb.co/WpFVp23r/Generador-di-sel-silencioso.jpg;914,02
-UCDLI12325;Taladro inalámbrico;Herramientas Eléctricas;"Voltaje: 12V - Máx torsión: 20NM - Torsión: 15+1";30;12,5;11425,25;https://i.ibb.co/bgFGNy84/Taladro-inal-mbrico.jpg;914,02
-UGE8002;Generador De Gasolina;Herramientas Eléctricas;"Voltaje nominal(V): 110-120 - Frecuencia nominal(Hz): 60 - Salida máx.(kW): 0.8";10;150;137103;https://i.ibb.co/7tYGP5tb/Generador-De-Gasolina.jpg;914,02
+UCS18578;Sierra Circular;Herramientas Eléctricas;"Voltaje: 110-120V~50/60Hz
+Potencia de entrada: 1200W
+Diámetro de la hoja: 7-1/4""x0.787""";15;30;27420,6;https://i.ibb.co/hRGhLNJb/Sierra-Circular.jpg;914,02
+UPS2408;Lijadora Orbital De Mano;Herramientas Eléctricas;"Voltaje:110-120V~60Hz
+Potencia de entrada:240W
+Velocidad sin carga:14000rpm";10;25;22850,5;https://i.ibb.co/PsY5q0q1/Lijadora-Orbital-De-Mano.jpg;914,02
+UCOS223589;Sierra cortada;Herramientas Eléctricas;"Voltage:110V-120V~50-60Hz
+Input power: 2200W
+Blade size:14""x1""";20;15;13710,3;https://i.ibb.co/pBjTRfsd/Cierra-cortada.jpg;914,02
+GSE50001;Generador diésel silencioso;Generadores;"Voltaje nominal(V):220-240
+Frecuencia nominal(Hz):50
+Potencia máx. (KW): 5";5;350;319907;https://i.ibb.co/WpFVp23r/Generador-di-sel-silencioso.jpg;914,02
+UCDLI12325;Taladro inalámbrico;Herramientas Eléctricas;"Voltaje:12V
+Máx torsión: 20NM
+Torsión: 15+1";30;12,5;11425,25;https://i.ibb.co/bgFGNy84/Taladro-inal-mbrico.jpg;914,02
+UGE8002;Generador De Gasolina;Herramientas Eléctricas;"Voltaje nominal(V):110-120
+Frecuencia nominal(Hz):60
+Salida máx.(kW):0.8";10;150;137103;https://i.ibb.co/7tYGP5tb/Generador-De-Gasolina.jpg;914,02
