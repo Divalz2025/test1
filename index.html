@@ -325,4 +325,457 @@
         </h3>
         <p class="text-xs text-neutral-400">Envía tu pedido por WhatsApp</p>
       </div>
-      <button onclick="toggleCartDrawer()" class="bg-neutral-800 hover:bg-ingco-yellow hover:text-black text-white w-8 h-8
+      <button onclick="toggleCartDrawer()" class="bg-neutral-800 hover:bg-ingco-yellow hover:text-black text-white w-8 h-8 rounded font-bold transition">✕</button>
+    </div>
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-50"></div>
+    <div class="bg-white border-t-2 border-neutral-200 p-4 space-y-3 shadow-inner">
+      <input type="text" id="customer-name" placeholder="Tu Nombre / Empresa" class="w-full border border-neutral-300 rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-ingco-yellow" />
+      <div class="bg-ingco-dark text-white rounded-lg p-3 space-y-1">
+        <div class="flex justify-between items-center text-xs text-neutral-400">
+          <span>Tasa BCV:</span>
+          <span id="cart-bcv-rate-label">0.00 Bs.</span>
+        </div>
+        <div class="flex justify-between items-center pt-1 border-t border-neutral-700">
+          <span class="font-industrial font-bold uppercase text-sm">Total Divisas:</span>
+          <span id="cart-total-usd" class="font-industrial font-black text-2xl text-ingco-yellow">$0.00</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="font-industrial font-bold uppercase text-xs text-neutral-300">Total Bolívares:</span>
+          <span id="cart-total-bs" class="font-industrial font-extrabold text-base text-white">Bs. 0,00</span>
+        </div>
+      </div>
+      <button onclick="sendWhatsAppOrder()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-industrial font-extrabold uppercase py-3 px-4 rounded text-sm transition shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+        Enviar Pedido por WhatsApp (+5841440774)
+      </button>
+    </div>
+  </aside>
+
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- JAVASCRIPT ROBUSTO PARA CSV CON SALTOS DE LÍNEA -->
+  <script>
+    let products = [];
+    let cart = [];
+    let selectedCategory = "TODOS";
+    let currencyMode = "BOTH";
+    let config = {
+      bcvRate: 916.02,
+      whatsappPhone: "5841440774"
+    };
+
+    async function initApp() {
+      const savedCart = localStorage.getItem("ferrepro_cart");
+      if (savedCart) { try { cart = JSON.parse(savedCart) || []; } catch (e) { cart = []; } }
+
+      const savedRate = localStorage.getItem("ferrepro_bcv");
+      if (savedRate) { config.bcvRate = parseFloat(savedRate) || 916.02; }
+
+      await loadCatalogCsv();
+      updateHeaderUI();
+      renderCategoryTabs();
+      applyFilters();
+      renderCart();
+    }
+
+    async function loadCatalogCsv() {
+      try {
+        const response = await fetch("Catalogof.csv");
+        if (!response.ok) throw new Error("No se pudo cargar Catalogof.csv");
+        const csvText = await response.text();
+        parseCsvRobust(csvText);
+      } catch (error) {
+        console.error(error);
+        showToast("Error al cargar Catalogof.csv. Verifica que esté en la raíz de GitHub.", "error");
+      }
+    }
+
+    // Parser robusto que respeta comillas y saltos de línea internos en las descripciones
+    function parseCsvRobust(text) {
+      let rows = [];
+      let currentRow = [];
+      let currentField = "";
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+        let nextChar = text[i + 1];
+
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            currentField += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ';' && !inQuotes) {
+          currentRow.push(currentField.trim());
+          currentField = "";
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+          if (char === '\r' && nextChar === '\n') { i++; }
+          currentRow.push(currentField.trim());
+          if (currentRow.length > 1 || currentRow[0] !== "") {
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentField = "";
+        } else {
+          currentField += char;
+        }
+      }
+      if (currentField !== "" || currentRow.length > 0) {
+        currentRow.push(currentField.trim());
+        rows.push(currentRow);
+      }
+
+      if (rows.length < 2) return;
+
+      const parsedProducts = [];
+      // Omitimos la fila 0 (encabezados)
+      for (let i = 1; i < rows.length; i++) {
+        const cols = rows[i];
+        if (cols.length < 8 || !cols[0]) continue;
+
+        // ORDEN EXACTO SOLICITADO:
+        // 0: CODIGO SKU
+        // 1: NOMBRE DEL PRODUCTO
+        // 2: CATEGORIA
+        // 3: DESCRIPCION
+        // 4: STOCK
+        // 5: PRECIO DOLAR
+        // 6: PRECIO BCV
+        // 7: FOTO (URL)
+        // 8: TASA DE CAMBIO
+
+        const codigo = cols[0] || "";
+        const producto = cols[1] || "";
+        const categoria = (cols[2] || "GENERAL").toUpperCase();
+        const descripcion = cols[3] || "";
+        const stock = parseInt((cols[4] || "0").replace(/[^\d]/g, ""), 10) || 0;
+        
+        let precioDolar = parseFloat((cols[5] || "0").replace(/\$/g, "").replace(/\./g, "").replace(",", ".")) || 0;
+        let precioBcv = parseFloat((cols[6] || "0").replace(/Bs\.?/gi, "").replace(/\./g, "").replace(",", ".")) || 0;
+        const fotoUrl = cols[7] || "";
+        const tasaFila = parseFloat((cols[8] || "0").replace(/\./g, "").replace(",", ".")) || 0;
+
+        if (tasaFila > 0 && i === 1) {
+          config.bcvRate = tasaFila;
+        } else if (precioDolar > 0 && precioBcv > 0 && i === 1) {
+          config.bcvRate = precioBcv / precioDolar;
+        }
+
+        if (precioDolar === 0 && precioBcv > 0) {
+          precioDolar = precioBcv / config.bcvRate;
+        }
+
+        parsedProducts.push({
+          codigo,
+          producto,
+          categoria,
+          descripcion,
+          stock,
+          precioUsd: Number(precioDolar.toFixed(2)),
+          foto: fotoUrl
+        });
+      }
+
+      products = parsedProducts;
+      updateHeaderUI();
+      renderCategoryTabs();
+      applyFilters();
+    }
+
+    function updateHeaderUI() {
+      document.getElementById("display-bcv-rate").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2 }) + " Bs.";
+      document.getElementById("stat-total-products").textContent = products.length;
+      document.getElementById("stat-in-stock").textContent = products.filter(p => p.stock > 0).length;
+      document.getElementById("cart-bcv-rate-label").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2 }) + " Bs./$";
+    }
+
+    function setCurrencyMode(mode) {
+      currencyMode = mode;
+      document.querySelectorAll(".curr-btn").forEach(btn => {
+        btn.classList.remove("bg-ingco-yellow", "text-black");
+        btn.classList.add("text-neutral-300");
+      });
+      document.getElementById("btn-curr-" + mode).classList.remove("text-neutral-300");
+      document.getElementById("btn-curr-" + mode).classList.add("bg-ingco-yellow", "text-black");
+      applyFilters();
+    }
+
+    function renderCategoryTabs() {
+      const container = document.getElementById("category-tabs");
+      const categories = ["TODOS", ...new Set(products.map(p => p.categoria))];
+      container.innerHTML = categories.map(cat => {
+        const isActive = selectedCategory === cat;
+        const count = cat === "TODOS" ? products.length : products.filter(p => p.categoria === cat).length;
+        return `
+          <button onclick="selectCategory('${cat}')" class="whitespace-nowrap px-4 py-2 rounded font-industrial font-extrabold text-xs sm:text-sm uppercase transition border cursor-pointer ${isActive ? 'bg-ingco-black text-ingco-yellow border-ingco-black shadow-md' : 'bg-white text-neutral-700 border-neutral-300 hover:border-ingco-yellow'}">
+            <span>${cat}</span> <span class="text-[11px] px-1.5 py-0.2 rounded ${isActive ? 'bg-ingco-yellow text-black' : 'bg-neutral-200 text-neutral-700'}">${count}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectCategory(cat) {
+      selectedCategory = cat;
+      renderCategoryTabs();
+      applyFilters();
+    }
+
+    function clearSearch() {
+      document.getElementById("search-input").value = "";
+      applyFilters();
+    }
+
+    function resetFilters() {
+      selectedCategory = "TODOS";
+      document.getElementById("search-input").value = "";
+      renderCategoryTabs();
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const query = document.getElementById("search-input").value.trim().toLowerCase();
+      document.getElementById("clear-search-btn").classList.toggle("hidden", query.length === 0);
+
+      const filtered = products.filter(item => {
+        const matchesCat = selectedCategory === "TODOS" || item.categoria === selectedCategory;
+        const matchesQuery = !query ||
+          item.codigo.toLowerCase().includes(query) ||
+          item.producto.toLowerCase().includes(query) ||
+          item.categoria.toLowerCase().includes(query) ||
+          item.descripcion.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      renderProductGrid(filtered);
+    }
+
+    function renderProductGrid(list) {
+      const grid = document.getElementById("product-grid");
+      const emptyState = document.getElementById("empty-state");
+      document.getElementById("results-counter").textContent = `Mostrando ${list.length} productos`;
+
+      if (list.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+      emptyState.classList.add("hidden");
+
+      grid.innerHTML = list.map(item => {
+        const stockBadge = item.stock <= 0 
+          ? `<span class="bg-red-100 text-red-700 text-[11px] font-bold px-2 py-0.5 rounded">Agotado</span>`
+          : `<span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2 py-0.5 rounded">Stock: ${item.stock}</span>`;
+
+        let priceHtml = "";
+        const bsVal = item.precioUsd * config.bcvRate;
+        if (currencyMode === "USD") {
+          priceHtml = `<div class="font-industrial font-black text-2xl text-ingco-black">$${item.precioUsd.toFixed(2)}</div>`;
+        } else if (currencyMode === "BS") {
+          priceHtml = `<div class="font-industrial font-black text-xl text-ingco-black">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>`;
+        } else {
+          priceHtml = `
+            <div class="flex items-baseline justify-between gap-2">
+              <div class="font-industrial font-black text-2xl text-ingco-black">$${item.precioUsd.toFixed(2)}</div>
+              <div class="font-industrial font-extrabold text-sm text-neutral-600">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
+            </div>`;
+        }
+
+        const imgSrc = item.foto && item.foto.startsWith("http") ? item.foto : "https://via.placeholder.com/250?text=Ferreteria";
+
+        return `
+          <article class="bg-white rounded-xl border border-neutral-200 hover:border-ingco-yellow shadow-sm hover:shadow-xl transition flex flex-col overflow-hidden group">
+            <div class="px-3.5 pt-3 pb-2 flex items-center justify-between border-b border-neutral-100">
+              <span class="bg-ingco-black text-ingco-yellow font-industrial font-black text-xs px-2.5 py-0.5 rounded">${item.codigo}</span>
+              ${stockBadge}
+            </div>
+            <div onclick="openProductModal('${item.codigo}')" class="relative bg-neutral-50 h-48 flex items-center justify-center p-3 cursor-pointer overflow-hidden">
+              <img src="${imgSrc}" alt="${item.producto}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/250?text=Sin+Imagen'" />
+            </div>
+            <div class="p-4 flex-1 flex flex-col">
+              <div class="text-[11px] font-bold uppercase text-ingco-orange mb-0.5">${item.categoria}</div>
+              <h3 onclick="openProductModal('${item.codigo}')" class="font-industrial font-extrabold text-lg text-ingco-black uppercase leading-snug mb-1.5 cursor-pointer line-clamp-2">${item.producto}</h3>
+              <p class="text-xs text-neutral-600 line-clamp-2 mb-4 flex-1 whitespace-pre-line">${item.descripcion}</p>
+              <div class="bg-neutral-100 rounded-lg p-2.5 mb-3 border border-neutral-200">${priceHtml}</div>
+              <div class="grid grid-cols-12 gap-2">
+                <button onclick="openProductModal('${item.codigo}')" class="col-span-5 bg-neutral-800 hover:bg-black text-white font-industrial font-bold uppercase py-2 px-2 rounded text-xs transition cursor-pointer">Ficha</button>
+                <button onclick="addToCart('${item.codigo}')" ${item.stock <= 0 ? 'disabled' : ''} class="col-span-7 font-industrial font-extrabold uppercase py-2 px-2.5 rounded text-xs transition flex items-center justify-center gap-1 shadow-xs ${item.stock <= 0 ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed' : 'bg-ingco-yellow hover:bg-ingco-orange text-ingco-black cursor-pointer'}">+ Cotizar</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openProductModal(codigo) {
+      const item = products.find(p => p.codigo === codigo);
+      if (!item) return;
+
+      document.getElementById("modal-sku").textContent = item.codigo;
+      document.getElementById("modal-category").textContent = item.categoria;
+      document.getElementById("modal-title").textContent = item.producto;
+      document.getElementById("modal-desc").textContent = item.descripcion || "Sin descripción detallada.";
+      document.getElementById("modal-price-usd").textContent = "$" + item.precioUsd.toFixed(2);
+      document.getElementById("modal-price-bs").textContent = "Bs. " + (item.precioUsd * config.bcvRate).toLocaleString("es-VE", {minimumFractionDigits: 2});
+      document.getElementById("modal-img").src = item.foto && item.foto.startsWith("http") ? item.foto : "https://via.placeholder.com/300?text=Sin+Imagen";
+
+      const stockBadge = document.getElementById("modal-stock-badge");
+      stockBadge.className = item.stock <= 0 ? "inline-block text-xs font-bold px-2.5 py-1 rounded bg-red-100 text-red-700" : "inline-block text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-800";
+      stockBadge.textContent = item.stock <= 0 ? "Agotado" : `Disponible: ${item.stock} unidades`;
+
+      const addBtn = document.getElementById("modal-add-btn");
+      addBtn.disabled = item.stock <= 0;
+      addBtn.onclick = () => { addToCart(item.codigo); closeProductModal(); };
+
+      document.getElementById("product-modal").classList.remove("hidden");
+    }
+
+    function closeProductModal() { document.getElementById("product-modal").classList.add("hidden"); }
+
+    function openSettingsModal() {
+      document.getElementById("input-bcv-rate").value = config.bcvRate;
+      document.getElementById("settings-modal").classList.remove("hidden");
+    }
+
+    function closeSettingsModal() { document.getElementById("settings-modal").classList.add("hidden"); }
+
+    function saveSettings(event) {
+      event.preventDefault();
+      const newRate = parseFloat(document.getElementById("input-bcv-rate").value);
+      if (newRate > 0) {
+        config.bcvRate = newRate;
+        localStorage.setItem("ferrepro_bcv", newRate);
+        updateHeaderUI();
+        applyFilters();
+        renderCart();
+        closeSettingsModal();
+        showToast("Tasa BCV actualizada con éxito.");
+      }
+    }
+
+    function toggleCartDrawer() {
+      const drawer = document.getElementById("cart-drawer");
+      const overlay = document.getElementById("cart-drawer-overlay");
+      const isClosed = drawer.classList.contains("translate-x-full");
+      if (isClosed) {
+        drawer.classList.remove("translate-x-full");
+        overlay.classList.remove("hidden");
+      } else {
+        drawer.classList.add("translate-x-full");
+        overlay.classList.add("hidden");
+      }
+    }
+
+    function addToCart(codigo) {
+      const prod = products.find(p => p.codigo === codigo);
+      if (!prod || prod.stock <= 0) return;
+
+      const existing = cart.find(c => c.codigo === codigo);
+      if (existing) {
+        if (existing.qty < prod.stock) {
+          existing.qty += 1;
+        } else {
+          showToast("Stock máximo alcanzado", "error");
+          return;
+        }
+      } else {
+        cart.push({ codigo: prod.codigo, qty: 1 });
+      }
+      localStorage.setItem("ferrepro_cart", JSON.stringify(cart));
+      renderCart();
+      showToast(`Agregado: ${prod.producto}`);
+    }
+
+    function updateCartQty(codigo, delta) {
+      const idx = cart.findIndex(c => c.codigo === codigo);
+      if (idx === -1) return;
+      const prod = products.find(p => p.codigo === codigo);
+      const nextQty = cart[idx].qty + delta;
+      if (nextQty <= 0) {
+        cart.splice(idx, 1);
+      } else if (nextQty <= prod.stock) {
+        cart[idx].qty = nextQty;
+      }
+      localStorage.setItem("ferrepro_cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cart-items-container");
+      let totalItems = 0;
+      let totalUsd = 0;
+
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center p-6 text-neutral-400"><p class="font-industrial font-bold text-base uppercase text-neutral-600">Tu lista está vacía</p></div>`;
+      } else {
+        container.innerHTML = cart.map(entry => {
+          const prod = products.find(p => p.codigo === entry.codigo);
+          if (!prod) return "";
+          const lineUsd = prod.precioUsd * entry.qty;
+          totalItems += entry.qty;
+          totalUsd += lineUsd;
+          const bsLine = lineUsd * config.bcvRate;
+          return `
+            <div class="bg-white p-3 rounded-lg border border-neutral-200 flex items-center justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <span class="bg-ingco-black text-ingco-yellow font-bold text-[10px] px-1.5 py-0.2 rounded">${prod.codigo}</span>
+                <div class="font-industrial font-extrabold text-sm text-ingco-black uppercase truncate mt-1">${prod.producto}</div>
+                <div class="text-xs font-bold text-neutral-700">$${lineUsd.toFixed(2)} | Bs. ${bsLine.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
+              </div>
+              <div class="flex items-center bg-neutral-100 rounded border border-neutral-300">
+                <button onclick="updateCartQty('${prod.codigo}', -1)" class="w-7 h-7 font-bold text-neutral-700 hover:bg-neutral-200">−</button>
+                <span class="w-8 text-center text-xs font-extrabold">${entry.qty}</span>
+                <button onclick="updateCartQty('${prod.codigo}', 1)" class="w-7 h-7 font-bold text-neutral-700 hover:bg-neutral-200">+</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      document.getElementById("cart-badge-mobile").textContent = totalItems;
+      document.getElementById("cart-summary-desktop").textContent = `${totalItems} items • $${totalUsd.toFixed(2)}`;
+      document.getElementById("cart-total-usd").textContent = "$" + totalUsd.toFixed(2);
+      document.getElementById("cart-total-bs").textContent = "Bs. " + (totalUsd * config.bcvRate).toLocaleString("es-VE", {minimumFractionDigits: 2});
+    }
+
+    function sendWhatsAppOrder() {
+      if (cart.length === 0) {
+        showToast("Agrega productos a tu cotización primero.", "error");
+        return;
+      }
+      const customer = document.getElementById("customer-name").value.trim() || "Cliente";
+      let totalUsd = 0;
+      const lines = cart.map((entry, index) => {
+        const prod = products.find(p => p.codigo === entry.codigo);
+        if (!prod) return "";
+        const subUsd = prod.precioUsd * entry.qty;
+        totalUsd += subUsd;
+        return `${index + 1}. [${prod.codigo}] ${prod.producto} - Cant: ${entry.qty} ($${subUsd.toFixed(2)})`;
+      }).filter(Boolean);
+
+      const msg = `*PEDIDO - Catálogo Digital Ferretero By Armando Diaz*\n` +
+        `👤 *Cliente:* ${customer}\n` +
+        `💱 *Tasa BCV:* ${config.bcvRate.toLocaleString("es-VE", {minimumFractionDigits: 2})} Bs.\n` +
+        `----------------------------------\n` +
+        lines.join("\n") +
+        `\n----------------------------------\n` +
+        `💰 *TOTAL USD:* $${totalUsd.toFixed(2)}\n` +
+        `🇻🇪 *TOTAL BS:* Bs. ${(totalUsd * config.bcvRate).toLocaleString("es-VE", {minimumFractionDigits: 2})}`;
+
+      window.open(`https://wa.me/${config.whatsappPhone}?text=` + encodeURIComponent(msg), "_blank", "noopener,noreferrer");
+    }
+
+    function showToast(message, type = "success") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      toast.className = `toast-enter pointer-events-auto border-l-4 ${type === "error" ? "bg-red-600 text-white" : "bg-ingco-black text-white border-ingco-yellow"} px-4 py-3 rounded shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 max-w-sm`;
+      toast.innerHTML = `<span>${type === "error" ? "⚠" : "✔"}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
