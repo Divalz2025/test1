@@ -245,7 +245,7 @@
         <h4 class="font-industrial font-bold text-white uppercase tracking-wider text-sm mb-2.5">Atención y Pedidos WhatsApp</h4>
         <div class="inline-flex items-center gap-2 bg-ingco-steel px-3 py-2 rounded border border-neutral-700 text-xs">
           <span class="text-ingco-yellow font-bold">WhatsApp:</span>
-          <span class="text-white font-mono">+58 414-40774 (Asistente Armando Diaz)</span>
+          <span class="text-white font-mono">+58 414-4077442 (Asistente Armando Diaz)</span>
         </div>
       </div>
     </div>
@@ -345,7 +345,7 @@
         </div>
       </div>
       <button onclick="sendWhatsAppOrder()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-industrial font-extrabold uppercase py-3 px-4 rounded text-sm transition shadow-lg flex items-center justify-center gap-2 cursor-pointer">
-        Enviar Pedido por WhatsApp (+5841440774)
+        Enviar Pedido por WhatsApp (+584144077442)
       </button>
     </div>
   </aside>
@@ -360,7 +360,7 @@
     let currencyMode = "BOTH";
     let config = {
       bcvRate: 916.02,
-      whatsappPhone: "5841440774"
+      whatsappPhone: "584144077442"
     };
 
     async function initApp() {
@@ -430,21 +430,9 @@
       if (rows.length < 2) return;
 
       const parsedProducts = [];
-      // Omitimos la fila 0 (encabezados)
       for (let i = 1; i < rows.length; i++) {
         const cols = rows[i];
         if (cols.length < 8 || !cols[0]) continue;
-
-        // ORDEN EXACTO SOLICITADO:
-        // 0: CODIGO SKU
-        // 1: NOMBRE DEL PRODUCTO
-        // 2: CATEGORIA
-        // 3: DESCRIPCION
-        // 4: STOCK
-        // 5: PRECIO DOLAR
-        // 6: PRECIO BCV
-        // 7: FOTO (URL)
-        // 8: TASA DE CAMBIO
 
         const codigo = cols[0] || "";
         const producto = cols[1] || "";
