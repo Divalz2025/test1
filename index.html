@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo Digital Ferretero By Armando Diaz</title>
+  <title>HIERRO SAMY — Catálogo Digital Ferretero</title>
+  <!-- Favicon con el logo oficial -->
+  <link rel="icon" type="image/png" href="https://i.ibb.co/9kJ1CHYC/logo-transparete.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,15 +19,16 @@
             sans: ['Inter', 'sans-serif'],
           },
           colors: {
-            ingco: {
-              yellow: '#F5A623',
-              orange: '#FF7A00',
-              amber: '#FFB800',
-              black: '#111111',
-              dark: '#1A1A1A',
-              steel: '#262626',
-              gray: '#3A3A3A',
-              light: '#F4F4F5',
+            samy: {
+              navy: '#153A6E',      /* Azul marino principal del logo */
+              royal: '#1E4E8C',     /* Azul industrial medio para hovers */
+              deep: '#0B1D36',      /* Azul oscuro profundo para fondos/headers */
+              dark: '#0F2544',      /* Azul pizarra oscuro */
+              steel: '#1E3557',     /* Azul acero para tarjetas oscuras */
+              silver: '#CBD5E1',    /* Plateado claro metálico */
+              chrome: '#94A3B8',    /* Gris acero cromado */
+              accent: '#38BDF8',    /* Azul celeste metálico para acentos */
+              light: '#F1F5F9',
             }
           }
         }
@@ -35,42 +38,49 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #F3F4F6;
-      color: #111111;
+      background-color: #F1F5F9;
+      color: #0F172A;
       overflow-x: hidden;
     }
     h1, h2, h3, h4, .font-industrial {
       font-family: 'Barlow', sans-serif;
       letter-spacing: -0.01em;
     }
-    .ingco-hazard-stripe {
+    /* Franja industrial metálica azul y plata */
+    .samy-metal-stripe {
       background: repeating-linear-gradient(
         -45deg,
-        #F5A623,
-        #F5A623 12px,
-        #111111 12px,
-        #111111 24px
+        #153A6E,
+        #153A6E 14px,
+        #CBD5E1 14px,
+        #CBD5E1 28px
       );
     }
-    .ingco-hero-bg {
-      background-color: #111111;
+    /* Degradado acero y azul marino para el Hero */
+    .samy-hero-bg {
+      background-color: #0B1D36;
       background-image: 
-        radial-gradient(circle at 85% 20%, rgba(245, 166, 35, 0.22) 0%, transparent 45%),
-        linear-gradient(135deg, #111111 0%, #1E1E1E 60%, #292218 100%);
+        radial-gradient(circle at 85% 20%, rgba(148, 163, 184, 0.22) 0%, transparent 48%),
+        linear-gradient(135deg, #09172B 0%, #153A6E 65%, #1E293B 100%);
     }
-    .ingco-clip-badge {
-      clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
+    /* Contenedor con brillo sutil para resaltar el logo sobre fondos oscuros */
+    .logo-glow-wrapper {
+      background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(226,232,240,0.92));
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,1);
     }
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #1A1A1A;
+      background: #0B1D36;
     }
     ::-webkit-scrollbar-thumb {
-      background: #F5A623;
+      background: #64748B;
       border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
     }
     @keyframes slideInUp {
       from { transform: translateY(100%); opacity: 0; }
@@ -84,30 +94,30 @@
 <body class="min-h-screen flex flex-col">
 
   <!-- TOP BAR -->
-  <div class="bg-ingco-black text-white border-b border-neutral-800 text-xs sm:text-sm">
+  <div class="bg-samy-deep text-white border-b border-slate-800 text-xs sm:text-sm">
     <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2">
       <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-        <span class="inline-flex items-center gap-1.5 bg-ingco-steel px-2.5 py-1 rounded border border-neutral-700">
+        <span class="inline-flex items-center gap-1.5 bg-samy-steel px-2.5 py-1 rounded border border-slate-600/60">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="text-neutral-300 font-medium">Tasa BCV:</span>
-          <strong class="text-ingco-yellow font-industrial text-sm sm:text-base" id="display-bcv-rate">36,50 Bs.</strong>
-          <button onclick="openSettingsModal()" title="Editar Tasa BCV" class="ml-1 text-xs bg-neutral-700 hover:bg-ingco-yellow hover:text-black text-white px-1.5 py-0.5 rounded transition font-semibold">
+          <span class="text-slate-200 font-medium">Tasa BCV:</span>
+          <strong class="text-samy-silver font-industrial text-sm sm:text-base" id="display-bcv-rate">36,50 Bs.</strong>
+          <button onclick="openSettingsModal()" title="Editar Tasa BCV" class="ml-1 text-xs bg-slate-700 hover:bg-samy-silver hover:text-samy-deep text-white px-1.5 py-0.5 rounded transition font-semibold cursor-pointer">
             Editar Tasa
           </button>
         </span>
-        <span class="hidden lg:inline text-neutral-400">|</span>
-        <span class="hidden lg:inline text-neutral-300">Catálogo Digital Ferretero By Armando Diaz</span>
+        <span class="hidden lg:inline text-slate-500">|</span>
+        <span class="hidden lg:inline text-slate-300">Catálogo Digital Ferretero &amp; Estructuras Metálicas</span>
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="flex items-center bg-ingco-steel p-0.5 rounded border border-neutral-700" role="group">
-          <button onclick="setCurrencyMode('BOTH')" id="btn-curr-BOTH" class="curr-btn px-2 py-1 rounded text-xs font-bold transition bg-ingco-yellow text-black">
+        <div class="flex items-center bg-samy-steel p-0.5 rounded border border-slate-600/60" role="group">
+          <button onclick="setCurrencyMode('BOTH')" id="btn-curr-BOTH" class="curr-btn px-2 py-1 rounded text-xs font-bold transition bg-samy-silver text-samy-deep">
             USD + Bs.
           </button>
-          <button onclick="setCurrencyMode('USD')" id="btn-curr-USD" class="curr-btn px-2 py-1 rounded text-xs font-bold transition text-neutral-300 hover:text-white">
+          <button onclick="setCurrencyMode('USD')" id="btn-curr-USD" class="curr-btn px-2 py-1 rounded text-xs font-bold transition text-slate-300 hover:text-white">
             Solo $
           </button>
-          <button onclick="setCurrencyMode('BS')" id="btn-curr-BS" class="curr-btn px-2 py-1 rounded text-xs font-bold transition text-neutral-300 hover:text-white">
+          <button onclick="setCurrencyMode('BS')" id="btn-curr-BS" class="curr-btn px-2 py-1 rounded text-xs font-bold transition text-slate-300 hover:text-white">
             Solo Bs.
           </button>
         </div>
@@ -116,28 +126,33 @@
   </div>
 
   <!-- HEADER -->
-  <header class="bg-ingco-dark text-white sticky top-0 z-40 shadow-xl border-b-4 border-ingco-yellow">
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-col md:flex-row items-center justify-between gap-3">
+  <header class="bg-samy-dark text-white sticky top-0 z-40 shadow-xl border-b-4 border-samy-chrome">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
       <div class="flex items-center justify-between w-full md:w-auto">
-        <a href="#" onclick="resetFilters(); return false;" class="flex items-center gap-3 group">
-          <div class="bg-ingco-yellow text-ingco-black font-industrial font-black text-2xl sm:text-3xl px-3 py-1 tracking-tighter uppercase ingco-clip-badge shadow-md">
-            FERRE<span class="text-white bg-ingco-black px-1.5 ml-0.5">PRO</span>
+        <a href="#" onclick="resetFilters(); return false;" class="flex items-center gap-3.5 group">
+          <!-- LOGO OFICIAL EN EL TÍTULO -->
+          <div class="logo-glow-wrapper px-2.5 py-1.5 rounded-lg border border-slate-300 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <img 
+              src="https://i.ibb.co/9kJ1CHYC/logo-transparete.png" 
+              alt="Logo Hierro Samy" 
+              class="h-11 sm:h-14 w-auto object-contain"
+            />
           </div>
           <div>
-            <div id="store-name-header" class="font-industrial font-extrabold text-lg sm:text-xl tracking-wide uppercase leading-none text-white">
-              Catálogo Digital Ferretero By Armando Diaz
+            <div id="store-name-header" class="font-industrial font-black text-xl sm:text-2xl tracking-wide uppercase leading-none text-white">
+              HIERRO <span class="text-samy-silver">SAMY, C.A</span>
             </div>
-            <div class="text-[11px] text-ingco-yellow font-semibold tracking-widest uppercase mt-0.5">
-              Suministros y Herramientas
+            <div class="text-[11px] text-samy-chrome font-bold tracking-widest uppercase mt-1">
+             J-50055307-2
             </div>
           </div>
         </a>
 
-        <button onclick="toggleCartDrawer()" class="md:hidden relative bg-ingco-yellow text-ingco-black p-2.5 rounded font-bold flex items-center gap-1.5 shadow">
+        <button onclick="toggleCartDrawer()" class="md:hidden relative bg-samy-silver text-samy-deep p-2.5 rounded font-bold flex items-center gap-1.5 shadow">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-          <span id="cart-badge-mobile" class="bg-ingco-black text-ingco-yellow text-xs font-extrabold px-1.5 py-0.5 rounded-full">0</span>
+          <span id="cart-badge-mobile" class="bg-samy-navy text-white text-xs font-extrabold px-1.5 py-0.5 rounded-full">0</span>
         </button>
       </div>
 
@@ -148,10 +163,10 @@
             id="search-input"
             oninput="applyFilters()"
             placeholder="Buscar por código SKU, nombre, categoría, descripción..."
-            class="w-full bg-white text-ingco-black placeholder-neutral-500 pl-4 pr-20 py-2.5 rounded font-medium text-sm border-2 border-transparent focus:border-ingco-yellow focus:outline-none shadow-inner"
+            class="w-full bg-white text-slate-900 placeholder-slate-500 pl-4 pr-20 py-2.5 rounded font-medium text-sm border-2 border-transparent focus:border-samy-chrome focus:outline-none shadow-inner"
           />
-          <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-11 text-neutral-400 hover:text-black p-1">✕</button>
-          <span class="absolute right-0 top-0 bottom-0 bg-ingco-yellow text-ingco-black px-3.5 rounded-r flex items-center justify-center font-bold">
+          <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-11 text-slate-400 hover:text-samy-navy p-1">✕</button>
+          <span class="absolute right-0 top-0 bottom-0 bg-samy-navy text-white px-3.5 rounded-r flex items-center justify-center font-bold border-l border-slate-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z" />
             </svg>
@@ -160,13 +175,13 @@
       </div>
 
       <div class="hidden md:flex items-center gap-3">
-        <button onclick="toggleCartDrawer()" class="bg-ingco-yellow hover:bg-ingco-orange text-ingco-black font-industrial font-extrabold uppercase px-4 py-2.5 rounded flex items-center gap-2.5 transition shadow-lg cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+        <button onclick="toggleCartDrawer()" class="bg-gradient-to-b from-slate-100 to-slate-300 hover:from-white hover:to-slate-200 text-samy-deep border border-slate-400 font-industrial font-extrabold uppercase px-4 py-2.5 rounded flex items-center gap-2.5 transition shadow-lg cursor-pointer">
+          <svg class="w-5 h-5 text-samy-navy" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           <div class="text-left leading-tight">
-            <div class="text-[11px] font-bold opacity-80">MI COTIZACIÓN</div>
-            <div class="text-sm" id="cart-summary-desktop">0 items • $0.00</div>
+            <div class="text-[11px] font-bold text-samy-navy">MI COTIZACIÓN</div>
+            <div class="text-sm text-slate-900" id="cart-summary-desktop">0 items • $0.00</div>
           </div>
         </button>
       </div>
@@ -174,36 +189,36 @@
   </header>
 
   <!-- HERO SECTION -->
-  <section class="ingco-hero-bg text-white relative overflow-hidden border-b border-neutral-800">
-    <div class="h-2 w-full ingco-hazard-stripe"></div>
+  <section class="samy-hero-bg text-white relative overflow-hidden border-b border-slate-700">
+    <div class="h-2 w-full samy-metal-stripe"></div>
     <div class="max-w-7xl mx-auto px-4 py-8 sm:py-11 relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
       <div class="max-w-2xl text-center lg:text-left">
-        <div class="inline-flex items-center gap-2 bg-ingco-yellow/15 border border-ingco-yellow/40 text-ingco-yellow px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-3">
-          <span>⚡ Catálogo Digital Ferretero By Armando Diaz</span>
+        <div class="inline-flex items-center gap-2 bg-slate-200/10 border border-slate-400/40 text-samy-silver px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-3">
+          <span>⚙️ Acero, Herramientas y Construcción</span>
         </div>
         <h1 class="font-industrial font-black text-3xl sm:text-5xl uppercase tracking-tight leading-none mb-3">
-          HERRAMIENTAS Y MATERIALES <span class="text-ingco-yellow">DE ALTO RENDIMIENTO</span>
+          HERRAMIENTAS Y MATERIALES <span class="text-samy-silver underline decoration-samy-chrome/60 decoration-4 underline-offset-4">DE ALTA RESISTENCIA</span>
         </h1>
-        <p class="text-neutral-300 text-sm sm:text-base mb-6 max-w-xl mx-auto lg:mx-0">
-          Consulta disponibilidad real, descripciones detalladas y precios actualizados al instante mediante nuestro archivo <strong>Catalogof.csv</strong>. Arma tu cotización y envíala por WhatsApp.
+        <p class="text-slate-200 text-sm sm:text-base mb-6 max-w-xl mx-auto lg:mx-0">
+          Consulta disponibilidad real, especificaciones detalladas y precios actualizados al instante desde nuestro catálogo <strong>Hierro Samy</strong>. Arma tu cotización y envíala directo por WhatsApp.
         </p>
         <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
-          <a href="#catalogo-section" class="bg-ingco-yellow hover:bg-ingco-orange text-ingco-black font-industrial font-extrabold uppercase px-6 py-3 rounded text-sm sm:text-base tracking-wide transition shadow-lg">
+          <a href="#catalogo-section" class="bg-gradient-to-r from-slate-100 to-slate-300 hover:from-white hover:to-slate-200 text-samy-deep font-industrial font-extrabold uppercase px-6 py-3 rounded text-sm sm:text-base tracking-wide transition shadow-lg border border-white">
             Explorar Catálogo
           </a>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-3 w-full max-w-sm">
-        <div class="bg-ingco-steel/90 border-l-4 border-ingco-yellow p-4 rounded-r shadow">
-          <div class="text-neutral-400 text-xs font-semibold uppercase">Productos Activos</div>
+        <div class="bg-samy-steel/90 border-l-4 border-samy-silver p-4 rounded-r shadow-lg backdrop-blur-xs">
+          <div class="text-slate-300 text-xs font-semibold uppercase">Productos Activos</div>
           <div id="stat-total-products" class="font-industrial font-black text-2xl sm:text-3xl text-white mt-0.5">0</div>
-          <div class="text-[11px] text-ingco-yellow mt-0.5">Cargados desde CSV</div>
+          <div class="text-[11px] text-samy-silver mt-0.5">Cargados desde CSV</div>
         </div>
-        <div class="bg-ingco-steel/90 border-l-4 border-emerald-500 p-4 rounded-r shadow">
-          <div class="text-neutral-400 text-xs font-semibold uppercase">En Stock</div>
+        <div class="bg-samy-steel/90 border-l-4 border-emerald-400 p-4 rounded-r shadow-lg backdrop-blur-xs">
+          <div class="text-slate-300 text-xs font-semibold uppercase">En Stock</div>
           <div id="stat-in-stock" class="font-industrial font-black text-2xl sm:text-3xl text-emerald-400 mt-0.5">0</div>
-          <div class="text-[11px] text-neutral-300 mt-0.5">Disponibles</div>
+          <div class="text-[11px] text-slate-200 mt-0.5">Disponibles</div>
         </div>
       </div>
     </div>
@@ -213,80 +228,85 @@
   <main id="catalogo-section" class="flex-1 max-w-7xl w-full mx-auto px-4 py-7">
     <div class="mb-5">
       <div class="flex items-center justify-between mb-2.5">
-        <h2 class="font-industrial font-extrabold text-lg sm:text-xl uppercase text-ingco-black flex items-center gap-2">
-          <span class="w-2.5 h-6 bg-ingco-yellow inline-block"></span>
+        <h2 class="font-industrial font-extrabold text-lg sm:text-xl uppercase text-samy-deep flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-samy-navy inline-block rounded-xs"></span>
           Categorías Disponibles
         </h2>
-        <span id="results-counter" class="text-xs sm:text-sm font-semibold text-neutral-600">Cargando productos...</span>
+        <span id="results-counter" class="text-xs sm:text-sm font-semibold text-slate-600">Cargando productos...</span>
       </div>
       <div id="category-tabs" class="flex items-center gap-2 overflow-x-auto pb-2"></div>
     </div>
 
     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
 
-    <div id="empty-state" class="hidden bg-white rounded-xl border-2 border-dashed border-neutral-300 p-12 text-center my-6">
-      <h3 class="font-industrial font-extrabold text-xl uppercase text-ingco-black mb-1">No se encontraron productos</h3>
-      <p class="text-sm text-neutral-500 mb-4">Verifica que el archivo <strong>Catalogof.csv</strong> esté en el mismo directorio y tenga el formato correcto.</p>
+    <div id="empty-state" class="hidden bg-white rounded-xl border-2 border-dashed border-slate-300 p-12 text-center my-6">
+      <h3 class="font-industrial font-extrabold text-xl uppercase text-samy-deep mb-1">No se encontraron productos</h3>
+      <p class="text-sm text-slate-500 mb-4">Verifica que el archivo <strong>Catalogof.csv</strong> esté en el mismo directorio y tenga el formato correcto.</p>
     </div>
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-ingco-black text-neutral-300 border-t-4 border-ingco-yellow mt-12">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <div class="font-industrial font-black text-2xl text-white uppercase tracking-tight mb-2">
-          FERRE<span class="text-ingco-yellow">PRO</span> INDUSTRIAL
+  <footer class="bg-samy-deep text-slate-300 border-t-4 border-samy-chrome mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="logo-glow-wrapper px-3 py-2 rounded-lg border border-slate-400 shrink-0">
+          <img src="https://i.ibb.co/9kJ1CHYC/logo-transparete.png" alt="Hierro Samy" class="h-12 w-auto object-contain" />
         </div>
-        <p class="text-xs text-neutral-400 leading-relaxed">
-          Catálogo digital interactivo sincronizado con <strong>Catalogof.csv</strong>. Precios en divisas y tasa BCV oficial.
-        </p>
+        <div>
+          <div class="font-industrial font-black text-2xl text-white uppercase tracking-tight mb-1">
+            HIERRO <span class="text-samy-silver">SAMY, C.A</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Catálogo digital interactivo <strong>HIERRO SAMY</strong>. Tu ferretería y suplidora industrial de confianza.
+          </p>
+        </div>
       </div>
-      <div>
+      <div class="md:text-right">
         <h4 class="font-industrial font-bold text-white uppercase tracking-wider text-sm mb-2.5">Atención y Pedidos WhatsApp</h4>
-        <div class="inline-flex items-center gap-2 bg-ingco-steel px-3 py-2 rounded border border-neutral-700 text-xs">
-          <span class="text-ingco-yellow font-bold">WhatsApp:</span>
+        <div class="inline-flex items-center gap-2 bg-samy-steel px-3.5 py-2 rounded border border-slate-600 text-xs">
+          <span class="text-samy-silver font-bold">WhatsApp:</span>
           <span class="text-white font-mono">+58 414-4077442 (Asistente Armando Diaz)</span>
         </div>
       </div>
     </div>
-    <div class="bg-black/60 py-3 text-center text-[11px] text-neutral-500 border-t border-neutral-800">
-      Catálogo Digital Ferretero By Armando Diaz • Listo para GitHub Pages • Tasa BCV Referencial
+    <div class="bg-black/40 py-3 text-center text-[11px] text-slate-400 border-t border-slate-800">
+      Catálogo Digital Ferretero — &copy; 2026 HIERRO SAMY, C.A J-50055307-2 | Todos los derechos reservados.
     </div>
   </footer>
 
   <!-- MODAL: FICHA TÉCNICA -->
-  <div id="product-modal" class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-2xl w-full overflow-hidden shadow-2xl border-2 border-ingco-yellow">
-      <div class="bg-ingco-dark text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-ingco-yellow">
+  <div id="product-modal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-2xl w-full overflow-hidden shadow-2xl border-2 border-samy-navy">
+      <div class="bg-samy-dark text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-samy-chrome">
         <div class="flex items-center gap-2">
-          <span id="modal-sku" class="bg-ingco-yellow text-ingco-black font-industrial font-black text-xs px-2.5 py-0.5 rounded uppercase">SKU</span>
-          <span id="modal-category" class="text-xs text-neutral-300 font-semibold uppercase tracking-wider">CATEGORIA</span>
+          <span id="modal-sku" class="bg-samy-silver text-samy-deep font-industrial font-black text-xs px-2.5 py-0.5 rounded uppercase">SKU</span>
+          <span id="modal-category" class="text-xs text-slate-300 font-semibold uppercase tracking-wider">CATEGORIA</span>
         </div>
-        <button onclick="closeProductModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">✕</button>
+        <button onclick="closeProductModal()" class="text-slate-300 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
       </div>
       <div class="p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
-        <div class="sm:col-span-5 bg-neutral-100 rounded-lg p-4 flex items-center justify-center border border-neutral-200">
+        <div class="sm:col-span-5 bg-slate-100 rounded-lg p-4 flex items-center justify-center border border-slate-200">
           <img id="modal-img" src="" alt="Producto" class="max-h-48 object-contain rounded" onerror="this.src='https://via.placeholder.com/200?text=Sin+Imagen'" />
         </div>
         <div class="sm:col-span-7 space-y-3">
-          <h3 id="modal-title" class="font-industrial font-black text-2xl text-ingco-black uppercase leading-tight">Nombre Producto</h3>
+          <h3 id="modal-title" class="font-industrial font-black text-2xl text-samy-deep uppercase leading-tight">Nombre Producto</h3>
           <div id="modal-stock-badge" class="inline-block text-xs font-bold px-2.5 py-1 rounded">Stock</div>
-          <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-3">
-            <div class="text-[11px] font-bold uppercase text-neutral-500 mb-1">Descripción</div>
-            <p id="modal-desc" class="text-sm text-neutral-800 font-medium leading-relaxed whitespace-pre-line"></p>
+          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="text-[11px] font-bold uppercase text-slate-500 mb-1">Descripción</div>
+            <p id="modal-desc" class="text-sm text-slate-800 font-medium leading-relaxed whitespace-pre-line"></p>
           </div>
-          <div class="bg-ingco-dark text-white rounded-lg p-3.5 flex items-center justify-between">
+          <div class="bg-samy-dark text-white rounded-lg p-3.5 flex items-center justify-between border border-slate-700">
             <div>
-              <div class="text-[11px] text-neutral-400 uppercase font-semibold">Precio USD ($)</div>
-              <div id="modal-price-usd" class="font-industrial font-black text-2xl text-ingco-yellow">$0.00</div>
+              <div class="text-[11px] text-slate-300 uppercase font-semibold">Precio USD ($)</div>
+              <div id="modal-price-usd" class="font-industrial font-black text-2xl text-samy-silver">$0.00</div>
             </div>
-            <div class="text-right border-l border-neutral-700 pl-4">
-              <div class="text-[11px] text-neutral-400 uppercase font-semibold">Precio BCV (Bs.)</div>
+            <div class="text-right border-l border-slate-700 pl-4">
+              <div class="text-[11px] text-slate-300 uppercase font-semibold">Precio BCV (Bs.)</div>
               <div id="modal-price-bs" class="font-industrial font-extrabold text-xl text-white">Bs. 0,00</div>
             </div>
           </div>
           <div class="flex gap-2.5 pt-1">
-            <button id="modal-add-btn" class="flex-1 bg-ingco-yellow hover:bg-ingco-orange text-ingco-black font-industrial font-extrabold uppercase py-2.5 px-4 rounded text-sm transition flex items-center justify-center gap-2 shadow cursor-pointer">
+            <button id="modal-add-btn" class="flex-1 bg-samy-navy hover:bg-samy-royal text-white font-industrial font-extrabold uppercase py-2.5 px-4 rounded text-sm transition flex items-center justify-center gap-2 shadow cursor-pointer">
               Agregar a Cotización
             </button>
           </div>
@@ -296,51 +316,51 @@
   </div>
 
   <!-- MODAL: SETTINGS (TASA BCV) -->
-  <div id="settings-modal" class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-ingco-yellow">
-      <div class="bg-ingco-dark text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-ingco-yellow">
+  <div id="settings-modal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-samy-navy">
+      <div class="bg-samy-dark text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-samy-chrome">
         <h3 class="font-industrial font-extrabold text-lg uppercase">⚙ Ajustar Tasa BCV</h3>
-        <button onclick="closeSettingsModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">✕</button>
+        <button onclick="closeSettingsModal()" class="text-slate-300 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
       </div>
       <form onsubmit="saveSettings(event)" class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-bold uppercase text-neutral-700 mb-1">Tasa de Cambio BCV (Bs. por 1 USD)</label>
-          <input type="number" step="0.01" min="0.01" id="input-bcv-rate" required class="w-full border-2 border-neutral-300 focus:border-ingco-yellow rounded px-3 py-2 font-bold text-base focus:outline-none" />
+          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Tasa de Cambio BCV (Bs. por 1 USD)</label>
+          <input type="number" step="0.01" min="0.01" id="input-bcv-rate" required class="w-full border-2 border-slate-300 focus:border-samy-navy rounded px-3 py-2 font-bold text-base focus:outline-none" />
         </div>
-        <div class="flex justify-end gap-2 pt-2 border-t border-neutral-200">
-          <button type="button" onclick="closeSettingsModal()" class="bg-neutral-200 hover:bg-neutral-300 text-neutral-800 font-bold px-4 py-2 rounded text-xs">Cancelar</button>
-          <button type="submit" class="bg-ingco-yellow hover:bg-ingco-orange text-ingco-black font-industrial font-extrabold uppercase px-5 py-2 rounded text-sm shadow">Guardar</button>
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
+          <button type="button" onclick="closeSettingsModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded text-xs cursor-pointer">Cancelar</button>
+          <button type="submit" class="bg-samy-navy hover:bg-samy-royal text-white font-industrial font-extrabold uppercase px-5 py-2 rounded text-sm shadow cursor-pointer">Guardar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- CART DRAWER -->
-  <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 z-50 hidden bg-black/60 transition-opacity"></div>
-  <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l-4 border-ingco-yellow">
-    <div class="bg-ingco-dark text-white px-5 py-4 flex items-center justify-between border-b border-neutral-800">
+  <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 z-50 hidden bg-slate-950/60 transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l-4 border-samy-navy">
+    <div class="bg-samy-dark text-white px-5 py-4 flex items-center justify-between border-b border-slate-700">
       <div>
         <h3 class="font-industrial font-black text-xl uppercase tracking-wide flex items-center gap-2">
-          <span class="text-ingco-yellow">🛒</span> Lista de Cotización
+          <span class="text-samy-silver">🛒</span> Lista de Cotización
         </h3>
-        <p class="text-xs text-neutral-400">Envía tu pedido por WhatsApp</p>
+        <p class="text-xs text-slate-300">Envía tu pedido por WhatsApp</p>
       </div>
-      <button onclick="toggleCartDrawer()" class="bg-neutral-800 hover:bg-ingco-yellow hover:text-black text-white w-8 h-8 rounded font-bold transition">✕</button>
+      <button onclick="toggleCartDrawer()" class="bg-samy-steel hover:bg-samy-silver hover:text-samy-deep text-white w-8 h-8 rounded font-bold transition cursor-pointer">✕</button>
     </div>
-    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-50"></div>
-    <div class="bg-white border-t-2 border-neutral-200 p-4 space-y-3 shadow-inner">
-      <input type="text" id="customer-name" placeholder="Tu Nombre / Empresa" class="w-full border border-neutral-300 rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-ingco-yellow" />
-      <div class="bg-ingco-dark text-white rounded-lg p-3 space-y-1">
-        <div class="flex justify-between items-center text-xs text-neutral-400">
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50"></div>
+    <div class="bg-white border-t-2 border-slate-200 p-4 space-y-3 shadow-inner">
+      <input type="text" id="customer-name" placeholder="Tu Nombre / Empresa" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs focus:outline-none focus:border-samy-navy" />
+      <div class="bg-samy-dark text-white rounded-lg p-3 space-y-1 border border-slate-700">
+        <div class="flex justify-between items-center text-xs text-slate-300">
           <span>Tasa BCV:</span>
           <span id="cart-bcv-rate-label">0.00 Bs.</span>
         </div>
-        <div class="flex justify-between items-center pt-1 border-t border-neutral-700">
+        <div class="flex justify-between items-center pt-1 border-t border-slate-700">
           <span class="font-industrial font-bold uppercase text-sm">Total Divisas:</span>
-          <span id="cart-total-usd" class="font-industrial font-black text-2xl text-ingco-yellow">$0.00</span>
+          <span id="cart-total-usd" class="font-industrial font-black text-2xl text-samy-silver">$0.00</span>
         </div>
         <div class="flex justify-between items-center">
-          <span class="font-industrial font-bold uppercase text-xs text-neutral-300">Total Bolívares:</span>
+          <span class="font-industrial font-bold uppercase text-xs text-slate-300">Total Bolívares:</span>
           <span id="cart-total-bs" class="font-industrial font-extrabold text-base text-white">Bs. 0,00</span>
         </div>
       </div>
@@ -389,7 +409,6 @@
       }
     }
 
-    // Parser robusto que respeta comillas y saltos de línea internos en las descripciones
     function parseCsvRobust(text) {
       let rows = [];
       let currentRow = [];
@@ -482,11 +501,11 @@
     function setCurrencyMode(mode) {
       currencyMode = mode;
       document.querySelectorAll(".curr-btn").forEach(btn => {
-        btn.classList.remove("bg-ingco-yellow", "text-black");
-        btn.classList.add("text-neutral-300");
+        btn.classList.remove("bg-samy-silver", "text-samy-deep");
+        btn.classList.add("text-slate-300");
       });
-      document.getElementById("btn-curr-" + mode).classList.remove("text-neutral-300");
-      document.getElementById("btn-curr-" + mode).classList.add("bg-ingco-yellow", "text-black");
+      document.getElementById("btn-curr-" + mode).classList.remove("text-slate-300");
+      document.getElementById("btn-curr-" + mode).classList.add("bg-samy-silver", "text-samy-deep");
       applyFilters();
     }
 
@@ -497,8 +516,8 @@
         const isActive = selectedCategory === cat;
         const count = cat === "TODOS" ? products.length : products.filter(p => p.categoria === cat).length;
         return `
-          <button onclick="selectCategory('${cat}')" class="whitespace-nowrap px-4 py-2 rounded font-industrial font-extrabold text-xs sm:text-sm uppercase transition border cursor-pointer ${isActive ? 'bg-ingco-black text-ingco-yellow border-ingco-black shadow-md' : 'bg-white text-neutral-700 border-neutral-300 hover:border-ingco-yellow'}">
-            <span>${cat}</span> <span class="text-[11px] px-1.5 py-0.2 rounded ${isActive ? 'bg-ingco-yellow text-black' : 'bg-neutral-200 text-neutral-700'}">${count}</span>
+          <button onclick="selectCategory('${cat}')" class="whitespace-nowrap px-4 py-2 rounded font-industrial font-extrabold text-xs sm:text-sm uppercase transition border cursor-pointer ${isActive ? 'bg-samy-navy text-white border-samy-navy shadow-md' : 'bg-white text-slate-700 border-slate-300 hover:border-samy-navy'}">
+            <span>${cat}</span> <span class="text-[11px] px-1.5 py-0.2 rounded ${isActive ? 'bg-samy-silver text-samy-deep' : 'bg-slate-200 text-slate-700'}">${count}</span>
           </button>
         `;
       }).join("");
@@ -559,36 +578,36 @@
         let priceHtml = "";
         const bsVal = item.precioUsd * config.bcvRate;
         if (currencyMode === "USD") {
-          priceHtml = `<div class="font-industrial font-black text-2xl text-ingco-black">$${item.precioUsd.toFixed(2)}</div>`;
+          priceHtml = `<div class="font-industrial font-black text-2xl text-samy-deep">$${item.precioUsd.toFixed(2)}</div>`;
         } else if (currencyMode === "BS") {
-          priceHtml = `<div class="font-industrial font-black text-xl text-ingco-black">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>`;
+          priceHtml = `<div class="font-industrial font-black text-xl text-samy-deep">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>`;
         } else {
           priceHtml = `
             <div class="flex items-baseline justify-between gap-2">
-              <div class="font-industrial font-black text-2xl text-ingco-black">$${item.precioUsd.toFixed(2)}</div>
-              <div class="font-industrial font-extrabold text-sm text-neutral-600">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
+              <div class="font-industrial font-black text-2xl text-samy-deep">$${item.precioUsd.toFixed(2)}</div>
+              <div class="font-industrial font-extrabold text-sm text-slate-600">Bs. ${bsVal.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
             </div>`;
         }
 
         const imgSrc = item.foto && item.foto.startsWith("http") ? item.foto : "https://via.placeholder.com/250?text=Ferreteria";
 
         return `
-          <article class="bg-white rounded-xl border border-neutral-200 hover:border-ingco-yellow shadow-sm hover:shadow-xl transition flex flex-col overflow-hidden group">
-            <div class="px-3.5 pt-3 pb-2 flex items-center justify-between border-b border-neutral-100">
-              <span class="bg-ingco-black text-ingco-yellow font-industrial font-black text-xs px-2.5 py-0.5 rounded">${item.codigo}</span>
+          <article class="bg-white rounded-xl border border-slate-200 hover:border-samy-navy shadow-sm hover:shadow-xl transition flex flex-col overflow-hidden group">
+            <div class="px-3.5 pt-3 pb-2 flex items-center justify-between border-b border-slate-100 bg-slate-50/60">
+              <span class="bg-samy-navy text-white font-industrial font-black text-xs px-2.5 py-0.5 rounded">${item.codigo}</span>
               ${stockBadge}
             </div>
-            <div onclick="openProductModal('${item.codigo}')" class="relative bg-neutral-50 h-48 flex items-center justify-center p-3 cursor-pointer overflow-hidden">
+            <div onclick="openProductModal('${item.codigo}')" class="relative bg-slate-50 h-48 flex items-center justify-center p-3 cursor-pointer overflow-hidden">
               <img src="${imgSrc}" alt="${item.producto}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/250?text=Sin+Imagen'" />
             </div>
             <div class="p-4 flex-1 flex flex-col">
-              <div class="text-[11px] font-bold uppercase text-ingco-orange mb-0.5">${item.categoria}</div>
-              <h3 onclick="openProductModal('${item.codigo}')" class="font-industrial font-extrabold text-lg text-ingco-black uppercase leading-snug mb-1.5 cursor-pointer line-clamp-2">${item.producto}</h3>
-              <p class="text-xs text-neutral-600 line-clamp-2 mb-4 flex-1 whitespace-pre-line">${item.descripcion}</p>
-              <div class="bg-neutral-100 rounded-lg p-2.5 mb-3 border border-neutral-200">${priceHtml}</div>
+              <div class="text-[11px] font-bold uppercase text-samy-royal mb-0.5">${item.categoria}</div>
+              <h3 onclick="openProductModal('${item.codigo}')" class="font-industrial font-extrabold text-lg text-samy-deep uppercase leading-snug mb-1.5 cursor-pointer line-clamp-2">${item.producto}</h3>
+              <p class="text-xs text-slate-600 line-clamp-2 mb-4 flex-1 whitespace-pre-line">${item.descripcion}</p>
+              <div class="bg-slate-100 rounded-lg p-2.5 mb-3 border border-slate-200">${priceHtml}</div>
               <div class="grid grid-cols-12 gap-2">
-                <button onclick="openProductModal('${item.codigo}')" class="col-span-5 bg-neutral-800 hover:bg-black text-white font-industrial font-bold uppercase py-2 px-2 rounded text-xs transition cursor-pointer">Ficha</button>
-                <button onclick="addToCart('${item.codigo}')" ${item.stock <= 0 ? 'disabled' : ''} class="col-span-7 font-industrial font-extrabold uppercase py-2 px-2.5 rounded text-xs transition flex items-center justify-center gap-1 shadow-xs ${item.stock <= 0 ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed' : 'bg-ingco-yellow hover:bg-ingco-orange text-ingco-black cursor-pointer'}">+ Cotizar</button>
+                <button onclick="openProductModal('${item.codigo}')" class="col-span-5 bg-slate-700 hover:bg-samy-deep text-white font-industrial font-bold uppercase py-2 px-2 rounded text-xs transition cursor-pointer">Ficha</button>
+                <button onclick="addToCart('${item.codigo}')" ${item.stock <= 0 ? 'disabled' : ''} class="col-span-7 font-industrial font-extrabold uppercase py-2 px-2.5 rounded text-xs transition flex items-center justify-center gap-1 shadow-xs ${item.stock <= 0 ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-samy-navy hover:bg-samy-royal text-white cursor-pointer'}">+ Cotizar</button>
               </div>
             </div>
           </article>
@@ -695,7 +714,7 @@
       let totalUsd = 0;
 
       if (cart.length === 0) {
-        container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center p-6 text-neutral-400"><p class="font-industrial font-bold text-base uppercase text-neutral-600">Tu lista está vacía</p></div>`;
+        container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400"><p class="font-industrial font-bold text-base uppercase text-slate-600">Tu lista está vacía</p></div>`;
       } else {
         container.innerHTML = cart.map(entry => {
           const prod = products.find(p => p.codigo === entry.codigo);
@@ -705,16 +724,16 @@
           totalUsd += lineUsd;
           const bsLine = lineUsd * config.bcvRate;
           return `
-            <div class="bg-white p-3 rounded-lg border border-neutral-200 flex items-center justify-between gap-3">
+            <div class="bg-white p-3 rounded-lg border border-slate-200 flex items-center justify-between gap-3">
               <div class="flex-1 min-w-0">
-                <span class="bg-ingco-black text-ingco-yellow font-bold text-[10px] px-1.5 py-0.2 rounded">${prod.codigo}</span>
-                <div class="font-industrial font-extrabold text-sm text-ingco-black uppercase truncate mt-1">${prod.producto}</div>
-                <div class="text-xs font-bold text-neutral-700">$${lineUsd.toFixed(2)} | Bs. ${bsLine.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
+                <span class="bg-samy-navy text-white font-bold text-[10px] px-1.5 py-0.2 rounded">${prod.codigo}</span>
+                <div class="font-industrial font-extrabold text-sm text-samy-deep uppercase truncate mt-1">${prod.producto}</div>
+                <div class="text-xs font-bold text-slate-700">$${lineUsd.toFixed(2)} | Bs. ${bsLine.toLocaleString("es-VE", {minimumFractionDigits: 2})}</div>
               </div>
-              <div class="flex items-center bg-neutral-100 rounded border border-neutral-300">
-                <button onclick="updateCartQty('${prod.codigo}', -1)" class="w-7 h-7 font-bold text-neutral-700 hover:bg-neutral-200">−</button>
+              <div class="flex items-center bg-slate-100 rounded border border-slate-300">
+                <button onclick="updateCartQty('${prod.codigo}', -1)" class="w-7 h-7 font-bold text-slate-700 hover:bg-slate-200 cursor-pointer">−</button>
                 <span class="w-8 text-center text-xs font-extrabold">${entry.qty}</span>
-                <button onclick="updateCartQty('${prod.codigo}', 1)" class="w-7 h-7 font-bold text-neutral-700 hover:bg-neutral-200">+</button>
+                <button onclick="updateCartQty('${prod.codigo}', 1)" class="w-7 h-7 font-bold text-slate-700 hover:bg-slate-200 cursor-pointer">+</button>
               </div>
             </div>
           `;
@@ -742,7 +761,7 @@
         return `${index + 1}. [${prod.codigo}] ${prod.producto} - Cant: ${entry.qty} ($${subUsd.toFixed(2)})`;
       }).filter(Boolean);
 
-      const msg = `*PEDIDO - Catálogo Digital Ferretero By Armando Diaz*\n` +
+      const msg = `*PEDIDO - Catálogo Digital Hierro Samy*\n` +
         `👤 *Cliente:* ${customer}\n` +
         `💱 *Tasa BCV:* ${config.bcvRate.toLocaleString("es-VE", {minimumFractionDigits: 2})} Bs.\n` +
         `----------------------------------\n` +
@@ -757,7 +776,7 @@
     function showToast(message, type = "success") {
       const container = document.getElementById("toast-container");
       const toast = document.createElement("div");
-      toast.className = `toast-enter pointer-events-auto border-l-4 ${type === "error" ? "bg-red-600 text-white" : "bg-ingco-black text-white border-ingco-yellow"} px-4 py-3 rounded shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 max-w-sm`;
+      toast.className = `toast-enter pointer-events-auto border-l-4 ${type === "error" ? "bg-red-600 text-white border-red-200" : "bg-samy-dark text-white border-samy-silver"} px-4 py-3 rounded shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 max-w-sm`;
       toast.innerHTML = `<span>${type === "error" ? "⚠" : "✔"}</span><span>${message}</span>`;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 3000);
