@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HIERRO SAMY — Catálogo Digital Ferretero</title>
+  <title>HIERRO SAMMY — Catálogo Digital Ferretero</title>
   <!-- Favicon con el logo oficial -->
   <link rel="icon" type="image/png" href="https://i.ibb.co/9kJ1CHYC/logo-transparete.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -100,13 +100,10 @@
         <span class="inline-flex items-center gap-1.5 bg-samy-steel px-2.5 py-1 rounded border border-slate-600/60">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span class="text-slate-200 font-medium">Tasa BCV:</span>
-          <strong class="text-samy-silver font-industrial text-sm sm:text-base" id="display-bcv-rate">36,50 Bs.</strong>
-          <button onclick="openSettingsModal()" title="Editar Tasa BCV" class="ml-1 text-xs bg-slate-700 hover:bg-samy-silver hover:text-samy-deep text-white px-1.5 py-0.5 rounded transition font-semibold cursor-pointer">
-            Editar Tasa
-          </button>
+          <strong class="text-samy-silver font-industrial text-sm sm:text-base" id="display-bcv-rate">Cargando...</strong>
         </span>
         <span class="hidden lg:inline text-slate-500">|</span>
-        <span class="hidden lg:inline text-slate-300">Catálogo Digital Ferretero &amp; Estructuras Metálicas</span>
+        <span class="hidden lg:inline text-slate-300">Catálogo Digital Ferretero & Estructuras Metálicas</span>
       </div>
 
       <div class="flex items-center gap-2">
@@ -140,7 +137,7 @@
           </div>
           <div>
             <div id="store-name-header" class="font-industrial font-black text-xl sm:text-2xl tracking-wide uppercase leading-none text-white">
-              HIERRO <span class="text-samy-silver">SAMY, C.A</span>
+              HIERRO <span class="text-samy-silver">SAMMY, C.A</span>
             </div>
             <div class="text-[11px] text-samy-chrome font-bold tracking-widest uppercase mt-1">
              J-50055307-2
@@ -200,7 +197,7 @@
           HERRAMIENTAS Y MATERIALES <span class="text-samy-silver underline decoration-samy-chrome/60 decoration-4 underline-offset-4">DE ALTA RESISTENCIA</span>
         </h1>
         <p class="text-slate-200 text-sm sm:text-base mb-6 max-w-xl mx-auto lg:mx-0">
-          Consulta disponibilidad real, especificaciones detalladas y precios actualizados al instante desde nuestro catálogo <strong>Hierro Samy</strong>. Arma tu cotización y envíala directo por WhatsApp.
+          Consulta disponibilidad real, especificaciones detalladas y precios actualizados al instante desde nuestro catálogo <strong>Hierro Sammy</strong>. Arma tu cotización y envíala directo por WhatsApp.
         </p>
         <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
           <a href="#catalogo-section" class="bg-gradient-to-r from-slate-100 to-slate-300 hover:from-white hover:to-slate-200 text-samy-deep font-industrial font-extrabold uppercase px-6 py-3 rounded text-sm sm:text-base tracking-wide transition shadow-lg border border-white">
@@ -254,10 +251,10 @@
         </div>
         <div>
           <div class="font-industrial font-black text-2xl text-white uppercase tracking-tight mb-1">
-            HIERRO <span class="text-samy-silver">SAMY, C.A</span>
+            HIERRO <span class="text-samy-silver">SAMMYY, C.A</span>
           </div>
           <p class="text-xs text-slate-400 leading-relaxed">
-            Catálogo digital interactivo <strong>HIERRO SAMY</strong>. Tu ferretería y suplidora industrial de confianza.
+            Catálogo digital interactivo <strong>HIERRO SAMMY</strong>. Tu ferretería y suplidora industrial de confianza.
           </p>
         </div>
       </div>
@@ -270,7 +267,7 @@
       </div>
     </div>
     <div class="bg-black/40 py-3 text-center text-[11px] text-slate-400 border-t border-slate-800">
-      Catálogo Digital Ferretero — &copy; 2026 HIERRO SAMY, C.A J-50055307-2 | Todos los derechos reservados.
+      Catálogo Digital Ferretero — © 2026 HIERRO SAMMY, C.A J-50055307-2 | Todos los derechos reservados.
     </div>
   </footer>
 
@@ -315,26 +312,6 @@
     </div>
   </div>
 
-  <!-- MODAL: SETTINGS (TASA BCV) -->
-  <div id="settings-modal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full overflow-hidden shadow-2xl border-2 border-samy-navy">
-      <div class="bg-samy-dark text-white px-5 py-3.5 flex items-center justify-between border-b-2 border-samy-chrome">
-        <h3 class="font-industrial font-extrabold text-lg uppercase">⚙ Ajustar Tasa BCV</h3>
-        <button onclick="closeSettingsModal()" class="text-slate-300 hover:text-white text-xl font-bold px-2 cursor-pointer">✕</button>
-      </div>
-      <form onsubmit="saveSettings(event)" class="p-5 space-y-4">
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Tasa de Cambio BCV (Bs. por 1 USD)</label>
-          <input type="number" step="0.01" min="0.01" id="input-bcv-rate" required class="w-full border-2 border-slate-300 focus:border-samy-navy rounded px-3 py-2 font-bold text-base focus:outline-none" />
-        </div>
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
-          <button type="button" onclick="closeSettingsModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded text-xs cursor-pointer">Cancelar</button>
-          <button type="submit" class="bg-samy-navy hover:bg-samy-royal text-white font-industrial font-extrabold uppercase px-5 py-2 rounded text-sm shadow cursor-pointer">Guardar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- CART DRAWER -->
   <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 z-50 hidden bg-slate-950/60 transition-opacity"></div>
   <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l-4 border-samy-navy">
@@ -372,14 +349,14 @@
 
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- JAVASCRIPT ROBUSTO PARA CSV CON SALTOS DE LÍNEA -->
+  <!-- JAVASCRIPT: LECTURA CSV Y TASA BCV AUTOMÁTICA -->
   <script>
     let products = [];
     let cart = [];
     let selectedCategory = "TODOS";
     let currencyMode = "BOTH";
     let config = {
-      bcvRate: 916.02,
+      bcvRate: 916.02, // Valor base inicial de respaldo por si falla la red
       whatsappPhone: "584144077442"
     };
 
@@ -387,14 +364,30 @@
       const savedCart = localStorage.getItem("ferrepro_cart");
       if (savedCart) { try { cart = JSON.parse(savedCart) || []; } catch (e) { cart = []; } }
 
-      const savedRate = localStorage.getItem("ferrepro_bcv");
-      if (savedRate) { config.bcvRate = parseFloat(savedRate) || 916.02; }
+      // 1. Consultar automáticamente la tasa BCV oficial en tiempo real vía API
+      await fetchBcvRateOnline();
 
+      // 2. Cargar el catálogo CSV desde la raíz del repositorio y calcular precios
       await loadCatalogCsv();
       updateHeaderUI();
       renderCategoryTabs();
       applyFilters();
       renderCart();
+    }
+
+    // Función para obtener la tasa BCV automáticamente vía API
+    async function fetchBcvRateOnline() {
+      try {
+        const response = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.precio) {
+            config.bcvRate = parseFloat(data.precio);
+          }
+        }
+      } catch (error) {
+        console.warn("No se pudo conectar con la API online, usando respaldo del CSV.", error);
+      }
     }
 
     async function loadCatalogCsv() {
@@ -464,10 +457,13 @@
         const fotoUrl = cols[7] || "";
         const tasaFila = parseFloat((cols[8] || "0").replace(/\./g, "").replace(",", ".")) || 0;
 
-        if (tasaFila > 0 && i === 1) {
-          config.bcvRate = tasaFila;
-        } else if (precioDolar > 0 && precioBcv > 0 && i === 1) {
-          config.bcvRate = precioBcv / precioDolar;
+        // Si la API falló y el CSV trae tasa en la primera fila, se usa como respaldo
+        if (config.bcvRate === 916.02) {
+          if (tasaFila > 0 && i === 1) {
+            config.bcvRate = tasaFila;
+          } else if (precioDolar > 0 && precioBcv > 0 && i === 1) {
+            config.bcvRate = precioBcv / precioDolar;
+          }
         }
 
         if (precioDolar === 0 && precioBcv > 0) {
@@ -492,10 +488,10 @@
     }
 
     function updateHeaderUI() {
-      document.getElementById("display-bcv-rate").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2 }) + " Bs.";
+      document.getElementById("display-bcv-rate").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs.";
       document.getElementById("stat-total-products").textContent = products.length;
       document.getElementById("stat-in-stock").textContent = products.filter(p => p.stock > 0).length;
-      document.getElementById("cart-bcv-rate-label").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2 }) + " Bs./$";
+      document.getElementById("cart-bcv-rate-label").textContent = config.bcvRate.toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs./$";
     }
 
     function setCurrencyMode(mode) {
@@ -640,27 +636,6 @@
 
     function closeProductModal() { document.getElementById("product-modal").classList.add("hidden"); }
 
-    function openSettingsModal() {
-      document.getElementById("input-bcv-rate").value = config.bcvRate;
-      document.getElementById("settings-modal").classList.remove("hidden");
-    }
-
-    function closeSettingsModal() { document.getElementById("settings-modal").classList.add("hidden"); }
-
-    function saveSettings(event) {
-      event.preventDefault();
-      const newRate = parseFloat(document.getElementById("input-bcv-rate").value);
-      if (newRate > 0) {
-        config.bcvRate = newRate;
-        localStorage.setItem("ferrepro_bcv", newRate);
-        updateHeaderUI();
-        applyFilters();
-        renderCart();
-        closeSettingsModal();
-        showToast("Tasa BCV actualizada con éxito.");
-      }
-    }
-
     function toggleCartDrawer() {
       const drawer = document.getElementById("cart-drawer");
       const overlay = document.getElementById("cart-drawer-overlay");
@@ -761,7 +736,7 @@
         return `${index + 1}. [${prod.codigo}] ${prod.producto} - Cant: ${entry.qty} ($${subUsd.toFixed(2)})`;
       }).filter(Boolean);
 
-      const msg = `*PEDIDO - Catálogo Digital Hierro Samy*\n` +
+      const msg = `*PEDIDO - Catálogo Digital Hierro Sammy*\n` +
         `👤 *Cliente:* ${customer}\n` +
         `💱 *Tasa BCV:* ${config.bcvRate.toLocaleString("es-VE", {minimumFractionDigits: 2})} Bs.\n` +
         `----------------------------------\n` +
